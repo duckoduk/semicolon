@@ -1,0 +1,63 @@
+/* *{
+    margin: 0px;
+    padding: 0px;
+} */
+
+.menu{
+    display: flex;
+}
+
+/* 메뉴 공동 */
+.menu div ul {
+    list-style: none;
+    display: flex;
+
+    margin: 5px;
+    padding: 10px;
+
+    height: 50px;
+    background-color: #ddd;
+    border: solid 2px #333;
+    border-radius: 5px;
+}
+
+/* 메뉴 하위 공통 */
+.menu div ul li {
+    margin: 5px;
+    
+    text-align: center;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer; /* 암기! */
+    user-select: none; /* 암기! */
+}
+
+li:active {
+    background-color: #888;
+}
+
+/* 메뉴 세분 */
+.gradebox {
+    width: 200px;
+
+}
+
+.search {
+    margin: 5px;
+    padding: 10px;
+    height: 50px;
+    background-color: #ddd;
+    border: solid 2px #333;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.search:hover {
+    background-color: #ccc;
+}
+.search:active {
+    background-color: #888;
+} 
