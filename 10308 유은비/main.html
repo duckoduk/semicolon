@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<!-- 시계, 날씨, 다른 웹 이동 버튼 -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- 폰트 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@600&display=swap">
+
+    <style>
+        body {
+            background: url(backgound.jpg) top right no-repeat;
+            background-attachment: fixed;
+            background-size: 100%;
+            display: flex;
+            flex-direction: column; /* 요소들을 수직으로 배치합니다. */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #time {
+            font-size: 5em;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .shantell-sans-header {
+            font-family: "Shantell Sans", cursive;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            font-variation-settings:
+                "BNCE" 0,
+                "INFM" 0,
+                "SPAC" 0;
+        }
+
+        #weather {
+            margin-top: 20px; /* 날씨 위젯을 시계 아래에 띄우기 위한 여백 */
+        }
+
+        /* 메뉴 버튼 스타일 */
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .menu-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* 사이드 메뉴 스타일 */
+        .side-menu {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            height: 100%;
+            width: 300px;
+            background-color: #333;
+            color: white;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+        }
+
+        .side-menu a {
+            padding: 20px 15px;
+            text-decoration: none;
+            font-size: 1.5em;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            background-color: #575757;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2em;
+            cursor: pointer;
+        }
+    </style>
+    
+</head>
+<body>
+
+    <!-- 메뉴 버튼 -->
+    <button class="menu-button" onclick="openMenu()">☰</button>
+
+    <!-- 사이드 메뉴 -->
+    <div id="sideMenu" class="side-menu">
+        <span class="close-btn" onclick="closeMenu()">&times;</span>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- 시계 -->
+    <h1 class="shantell-sans-header" id="time"></h1>
+
+    <!-- 날씨 -->
+    <div id="weather">
+        <div id="ww_f73814b9d2a00" v='1.3' loc='id' a='{"t":"horizontal","lang":"en","sl_lpl":1,"ids":["wl4479"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF00","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+            More forecasts: 
+            <a href="https://oneweather.org/seoul/30_days/" id="ww_f73814b9d2a00_u" target="_blank">Seoul weather forecast 30 days</a>
+        </div>
+        <script async src="https://app3.weatherwidget.org/js/?id=ww_f73814b9d2a00"></script>
+    </div>
+    <!-- 여까지 날씨 -->
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { hour12: true, hour: '2-digit', minute: '2-digit'};  // 24시간 형식을 위한 옵션
+            const timeString = now.toLocaleTimeString('en-US', options);
+            document.getElementById("time").innerText = timeString;
+        }
+
+        // 페이지 로드 시 한 번 업데이트하고, 이후 1초마다 업데이트
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // 사이드 메뉴 열기
+        function openMenu() {
+            document.getElementById("sideMenu").style.right = "0";
+        }
+
+        // 사이드 메뉴 닫기
+        function closeMenu() {
+            document.getElementById("sideMenu").style.right = "-300px";
+        }
+    </script>
+</body>
+</html>
