@@ -91,7 +91,7 @@ searchBtn.addEventListener('click', (e)=> {
     }
     else {
         console.log(nameCode)
-        window.open('../pdfViewer.html','_blank');
+        window.open('./pdfViewer.html','_blank');
 
         localStorage.setItem("nameCode",nameCode);
     }
