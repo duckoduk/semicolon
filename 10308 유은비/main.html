@@ -13,7 +13,7 @@
 
     <style>
         body {
-            background: url(backgound.jpg) top right no-repeat;
+            background: url(background.jpg) top right no-repeat;
             background-attachment: fixed;
             background-size: 100%;
             display: flex;
@@ -78,7 +78,7 @@
             position: fixed;
             right: -300px;
             top: 0;
-            height: calc(100% - 40px);
+            height: calc(100% - 60px);
             width: 300px;
             background-color: #333;
             color: white;
@@ -195,7 +195,7 @@
             display: block;
             transition: 0.3s;
             user-select: none; /* Prevent text selection */
-            background-color: #4caf4f00;
+            /* background-color: #4caf4f00; */
             border: none;
             cursor: pointer;
             /* border-radius: 10px; */
@@ -203,10 +203,6 @@
         }
 
         .side-menu-button:hover {
-            background-color: #388e3c;
-        }
-
-        .background-button:hover {
             background-color: #388e3c;
         }
     </style>
@@ -232,8 +228,7 @@
             <a href="services.html">기능 2</a>
             <a href="contact.html">기능 3</a>
         </div>
-        <a href="#" class="side-menu-button" onclick="changeBackground()">배경 이미지 변경</a>
-        <a href="#" class="side-menu-button" onclick="changeColor()">폰트 색상 변경</a>
+        <a href="#" class="side-menu-button" onclick="openSettingsPopup()">사용자 설정</a>
     </div>
 
     <!-- 시계 -->
@@ -245,7 +240,48 @@
             More forecasts: 
             <a href="https://oneweather.org/seoul/30_days/" id="ww_f73814b9d2a00_u" target="_blank">Seoul weather forecast 30 days</a>
         </div>
-        <script async src="https://app3.weatherwidget.org/js/?id=ww_f73814b9d2a00"></script>
+        <script async src="https://app3.weatherwidget.org/js/?id=ww_f73814b9d2a00">        // Load settings from cookies
+        function loadSettings() {
+            const backgroundImage = getCookie("backgroundImage");
+            const fontColor = getCookie("fontColor");
+            if (backgroundImage) {
+                document.body.style.background = `url(${backgroundImage}) top right no-repeat`;
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundSize = "100%";
+            }
+            if (fontColor) {
+                document.documentElement.style.setProperty('--clock-color', fontColor);
+            }
+        }
+
+        // Save background image to cookies
+        function applyBackgroundImage() {
+            const imageUrl = document.getElementById('backgroundImage').value;
+            if (imageUrl) {
+                document.body.style.background = `url(${imageUrl}) top right no-repeat`;
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundSize = "100%";
+                setCookie("backgroundImage", imageUrl, 30);
+                setCookie("backgroundImage", imageUrl, 30);
+            }
+        }
+
+        // Save font color to cookies
+        function applyFontColor() {
+            const color = document.getElementById('fontColor').value;
+            if (color) {
+                document.documentElement.style.setProperty('--clock-color', color);
+                setCookie("fontColor", color, 30);
+                setCookie("fontColor", color, 30);
+            }
+        }
+
+        // Load bookmarks and settings on page load
+        window.onload = function() {
+            loadBookmarks();
+            loadSettings();
+        };
+    </script>
     </div>
 
     <script>
@@ -265,7 +301,7 @@
         function setCookie(name, value, days) {
             let date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + date.toUTCString() + "; path=/";
+            document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax;";
         }
 
         // Load bookmarks from cookies
@@ -275,7 +311,7 @@
                 const bookmarkArray = JSON.parse(bookmarks);
                 const bookmarkMenu = document.getElementById("bookmarkMenu");
                 bookmarkArray.forEach(bookmark => {
-                    const newId = `bookmark-${Date.now()}`;
+                    const newId = `bookmark-${Math.random().toString(36).substr(2, 9)}`;
                     const newBookmark = document.createElement("div");
                     newBookmark.className = "bookmark-item";
                     newBookmark.draggable = true;
@@ -321,7 +357,7 @@
             const name = prompt("즐겨찾기의 이름을 입력하세요:");
             if (url && name) {
                 const bookmarkMenu = document.getElementById("bookmarkMenu");
-                const newId = `bookmark-${Date.now()}`;
+                const newId = `bookmark-${Math.random().toString(36).substr(2, 9)}`;
                 const newBookmark = document.createElement("div");
                 newBookmark.className = "bookmark-item";
                 newBookmark.draggable = true;
@@ -346,7 +382,7 @@
         function drag(e) {
             dragSrcEl = e.target;
             e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.outerHTML);
+            e.dataTransfer.setData('text/plain', e.target.id);
         }
 
         document.querySelectorAll('.bookmark-item').forEach(item => {
@@ -357,12 +393,10 @@
 
             item.addEventListener('drop', function (e) {
                 e.preventDefault();
-                if (dragSrcEl !== this) {
-                    this.parentNode.removeChild(dragSrcEl);
-                    const dropHTML = e.dataTransfer.getData('text/html');
-                    this.insertAdjacentHTML('beforebegin', dropHTML);
-                    const dropElem = this.previousSibling;
-                    addEventListenersToDropElem(dropElem);
+                const data = e.dataTransfer.getData('text/plain');
+                const draggedElement = document.getElementById(data);
+                if (draggedElement && dragSrcEl !== this) {
+                    this.parentNode.insertBefore(draggedElement, this);
                     saveBookmarks();
                 }
             });
@@ -375,8 +409,16 @@
             elem.addEventListener('dragstart', drag);
         }
 
-        function changeBackground() {
-            const imageUrl = prompt("새 배경 이미지의 URL을 입력하세요:");
+        function openSettingsPopup() {
+            document.getElementById('settingsPopup').style.display = 'block';
+        }
+
+        function closeSettingsPopup() {
+            document.getElementById('settingsPopup').style.display = 'none';
+        }
+
+        function applyBackgroundImage() {
+            const imageUrl = document.getElementById('backgroundImage').value;
             if (imageUrl) {
                 document.body.style.background = `url(${imageUrl}) top right no-repeat`;
                 document.body.style.backgroundAttachment = "fixed";
@@ -384,15 +426,35 @@
             }
         }
 
-        function changeColor() {
-            const color = prompt("시계의 폰트 색상을 입력하세요 (예: #ff0000):");
+        function applyFontColor() {
+            const color = document.getElementById('fontColor').value;
             if (color) {
                 document.documentElement.style.setProperty('--clock-color', color);
             }
         }
 
         // Load bookmarks on page load
-        window.onload = loadBookmarks;
+        window.onload = function() {
+            loadBookmarks();
+            loadSettings();
+        };
     </script>
+    <!-- 사용자 설정 팝업 -->
+    <div id="settingsPopup" class="settings-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1); border-radius:10px;">
+        <h2>사용자 설정</h2>
+        <div>
+            <label for="backgroundImage">배경 이미지 URL:</label>
+            <input type="text" id="backgroundImage" placeholder="배경 이미지 URL 입력">
+            <button onclick="applyBackgroundImage()">적용</button>
+        </div>
+        <div style="margin-top:20px;">
+            <label for="fontColor">폰트 색상:</label>
+            <input type="color" id="fontColor">
+            <button onclick="applyFontColor()">적용</button>
+        </div>
+        <button style="margin-top:20px;" onclick="closeSettingsPopup()">닫기</button>
+    </div>
+
 </body>
 </html>
+a
