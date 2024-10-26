@@ -7,21 +7,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    <link rel="stylesheet" href="style.css">
     <!-- 폰트 -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@600&display=swap">
 
     <style>
         body {
-            background: url(backgound.jpg) top right no-repeat;
+            background: url(background.jpg) top right no-repeat;
             background-attachment: fixed;
             background-size: 100%;
             display: flex;
-            flex-direction: column; /* 요소들을 수직으로 배치합니다. */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            user-select: none; /* Prevent text selection */
         }
 
         #time {
@@ -29,6 +30,8 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
+            color: var(--clock-color, #000); /* Default color */
+            user-select: none; /* Prevent text selection */
         }
 
         .shantell-sans-header {
@@ -40,10 +43,12 @@
                 "BNCE" 0,
                 "INFM" 0,
                 "SPAC" 0;
+            user-select: none; /* Prevent text selection */
         }
 
         #weather {
-            margin-top: 20px; /* 날씨 위젯을 시계 아래에 띄우기 위한 여백 */
+            margin-top: 20px;
+            user-select: none; /* Prevent text selection */
         }
 
         /* 메뉴 버튼 스타일 */
@@ -60,6 +65,7 @@
             border-radius: 50px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s, transform 0.3s;
+            user-select: none; /* Prevent text selection */
         }
 
         .menu-button:hover {
@@ -72,7 +78,7 @@
             position: fixed;
             right: -300px;
             top: 0;
-            height: 100%;
+            height: calc(100% - 60px);
             width: 300px;
             background-color: #333;
             color: white;
@@ -80,6 +86,10 @@
             transition: 0.5s;
             padding-top: 60px;
             box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+            user-select: none; /* Prevent text selection */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .side-menu a {
@@ -89,6 +99,7 @@
             color: #f1f1f1;
             display: block;
             transition: 0.3s;
+            user-select: none; /* Prevent text selection */
         }
 
         .side-menu a:hover {
@@ -101,11 +112,109 @@
             left: 10px;
             font-size: 2em;
             cursor: pointer;
+            user-select: none; /* Prevent text selection */
+        }
+
+        /* 즐겨찾기 스타일 */
+        .bookmark-menu {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70px;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            user-select: none; /* Prevent text selection */
+        }
+
+        .bookmark-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            position: relative;
+            transition: background-color 0.3s;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .bookmark-item:hover {
+            background-color: #575757;
+        }
+
+        .bookmark-item img {
+            width: 40px;
+            height: 40px;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .remove-bookmark-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8em;
+            line-height: 1;
+            display: none;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .bookmark-item:hover .remove-bookmark-button {
+            display: block;
+        }
+
+        .add-bookmark-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .add-bookmark-button:hover {
+            background-color: #0056b3;
+        }
+
+        .side-menu-button {
+            padding: 20px 15px;
+            text-decoration: none;
+            font-size: 1.5em;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+            user-select: none; /* Prevent text selection */
+            /* background-color: #4caf4f00; */
+            border: none;
+            cursor: pointer;
+            /* border-radius: 10px; */
+            /* text-align: center; */
+        }
+
+        .side-menu-button:hover {
+            background-color: #388e3c;
         }
     </style>
     
 </head>
 <body>
+
+    <!-- 즐겨찾기 메뉴 -->
+    <div class="bookmark-menu" id="bookmarkMenu">
+        <!-- Bookmark items will be loaded here from cookies -->
+        <div class="add-bookmark-button" onclick="addBookmark()">+</div>
+    </div>
 
     <!-- 메뉴 버튼 -->
     <button class="menu-button" onclick="openMenu()">☰</button>
@@ -113,46 +222,248 @@
     <!-- 사이드 메뉴 -->
     <div id="sideMenu" class="side-menu">
         <span class="close-btn" onclick="closeMenu()">&times;</span>
-        <a href="index.html">모의고사 다운로드</a>
-        <a href="about.html">기능 1</a>
-        <a href="services.html">기능 2</a>
-        <a href="contact.html">기능 3</a>
+        <div>
+            <a href="index심성우.html">모의고사 다운로드</a>
+            <a href="about.html">기능 1</a>
+            <a href="services.html">기능 2</a>
+            <a href="contact.html">기능 3</a>
+        </div>
+        <a href="#" class="side-menu-button" onclick="openSettingsPopup()">사용자 설정</a>
     </div>
 
     <!-- 시계 -->
     <h1 class="shantell-sans-header" id="time"></h1>
 
+    <div class="container">
+        <h1>To-Do List</h1>
+        <div class="input-group">
+            <input type="text" id="task-input" placeholder="새로운 작업 추가...">
+            <button id="add-task-btn">추가</button>
+        </div>
+        <ul id="task-list"></ul>
+    </div>
+    <script src="script.js"></script>
+
+
     <!-- 날씨 -->
     <div id="weather">
-        <div id="ww_f73814b9d2a00" v='1.3' loc='id' a='{"t":"horizontal","lang":"en","sl_lpl":1,"ids":["wl4479"],"font":"Times","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF00","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-            More forecasts: 
-            <a href="https://oneweather.org/seoul/30_days/" id="ww_f73814b9d2a00_u" target="_blank">Seoul weather forecast 30 days</a>
+        <div id="ww_f5c47c53629e2" v='1.3' loc='id' a='{"t":"horizontal","lang":"en","sl_lpl":1,"ids":["wl4479"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>More forecasts: 
+            <a href="https://oneweather.org/seoul/30_days/" id="ww_f5c47c53629e2_u" target="_blank">Weather Seoul 30 days</a>
         </div>
-        <script async src="https://app3.weatherwidget.org/js/?id=ww_f73814b9d2a00"></script>
+        <script async src="https://app3.weatherwidget.org/js/?id=ww_f5c47c53629e2">        // Load settings from cookies
+        function loadSettings() {
+            const backgroundImage = getCookie("backgroundImage");
+            const fontColor = getCookie("fontColor");
+            if (backgroundImage) {
+                document.body.style.background = `url(${backgroundImage}) top right no-repeat`;
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundSize = "100%";
+            }
+            if (fontColor) {
+                document.documentElement.style.setProperty('--clock-color', fontColor);
+            }
+        }
+
+        // Save background image to cookies
+        function applyBackgroundImage() {
+            const imageUrl = document.getElementById('backgroundImage').value;
+            if (imageUrl) {
+                document.body.style.background = `url(${imageUrl}) top right no-repeat`;
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundSize = "100%";
+                setCookie("backgroundImage", imageUrl, 30);
+                setCookie("backgroundImage", imageUrl, 30);
+            }
+        }
+
+        // Save font color to cookies
+        function applyFontColor() {
+            const color = document.getElementById('fontColor').value;
+            if (color) {
+                document.documentElement.style.setProperty('--clock-color', color);
+                setCookie("fontColor", color, 30);
+                setCookie("fontColor", color, 30);
+            }
+        }
+
+        // Load bookmarks and settings on page load
+        window.onload = function() {
+            loadBookmarks();
+            loadSettings();
+        };
+    </script>
     </div>
-    <!-- 여까지 날씨 -->
 
     <script>
+        // Helper function to get cookie
+        function getCookie(name) {
+            let cookieArr = document.cookie.split(";");
+            for(let i = 0; i < cookieArr.length; i++) {
+                let cookiePair = cookieArr[i].split("=");
+                if(name === cookiePair[0].trim()) {
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            return null;
+        }
+
+        // Helper function to set cookie
+        function setCookie(name, value, days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + date.toUTCString() + "; path=/; SameSite=Lax;";
+        }
+
+        // Load bookmarks from cookies
+        function loadBookmarks() {
+            const bookmarks = getCookie("bookmarks");
+            if (bookmarks) {
+                const bookmarkArray = JSON.parse(bookmarks);
+                const bookmarkMenu = document.getElementById("bookmarkMenu");
+                bookmarkArray.forEach(bookmark => {
+                    const newId = `bookmark-${Math.random().toString(36).substr(2, 9)}`;
+                    const newBookmark = document.createElement("div");
+                    newBookmark.className = "bookmark-item";
+                    newBookmark.draggable = true;
+                    newBookmark.ondragstart = drag;
+                    newBookmark.id = newId;
+                    newBookmark.innerHTML = `<a href='${bookmark.url}' target='_blank'><img src='https://www.google.com/s2/favicons?domain=${bookmark.url}' alt='${bookmark.name}'></a><button class='remove-bookmark-button' onclick='removeBookmark("${newId}")'>&times;</button>`;
+                    bookmarkMenu.insertBefore(newBookmark, bookmarkMenu.lastElementChild);
+                });
+            }
+        }
+
+        // Save bookmarks to cookies
+        function saveBookmarks() {
+            const bookmarkItems = document.querySelectorAll(".bookmark-item");
+            const bookmarks = [];
+            bookmarkItems.forEach(item => {
+                const link = item.querySelector("a");
+                bookmarks.push({ url: link.href, name: link.querySelector("img").alt });
+            });
+            setCookie("bookmarks", JSON.stringify(bookmarks), 30);
+        }
+
         function updateTime() {
             const now = new Date();
-            const options = { hour12: true, hour: '2-digit', minute: '2-digit'};  // 24시간 형식을 위한 옵션
+            const options = { hour12: true, hour: '2-digit', minute: '2-digit'};
             const timeString = now.toLocaleTimeString('en-US', options);
             document.getElementById("time").innerText = timeString;
         }
 
-        // 페이지 로드 시 한 번 업데이트하고, 이후 1초마다 업데이트
         updateTime();
         setInterval(updateTime, 1000);
 
-        // 사이드 메뉴 열기
         function openMenu() {
             document.getElementById("sideMenu").style.right = "0";
         }
 
-        // 사이드 메뉴 닫기
         function closeMenu() {
             document.getElementById("sideMenu").style.right = "-300px";
         }
+
+        function addBookmark() {
+            const url = prompt("즐겨찾기에 추가할 URL을 입력하세요:");
+            const name = prompt("즐겨찾기의 이름을 입력하세요:");
+            if (url && name) {
+                const bookmarkMenu = document.getElementById("bookmarkMenu");
+                const newId = `bookmark-${Math.random().toString(36).substr(2, 9)}`;
+                const newBookmark = document.createElement("div");
+                newBookmark.className = "bookmark-item";
+                newBookmark.draggable = true;
+                newBookmark.ondragstart = drag;
+                newBookmark.id = newId;
+                newBookmark.innerHTML = `<a href='${url}' target='_blank'><img src='https://www.google.com/s2/favicons?domain=${url}' alt='${name}'></a><button class='remove-bookmark-button' onclick='removeBookmark("${newId}")'>&times;</button>`;
+                bookmarkMenu.insertBefore(newBookmark, bookmarkMenu.lastElementChild);
+                saveBookmarks();
+            }
+        }
+
+        function removeBookmark(id) {
+            const bookmark = document.getElementById(id);
+            if (bookmark) {
+                bookmark.remove();
+                saveBookmarks();
+            }
+        }
+
+        let dragSrcEl = null;
+
+        function drag(e) {
+            dragSrcEl = e.target;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', e.target.id);
+        }
+
+        document.querySelectorAll('.bookmark-item').forEach(item => {
+            item.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            });
+
+            item.addEventListener('drop', function (e) {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('text/plain');
+                const draggedElement = document.getElementById(data);
+                if (draggedElement && dragSrcEl !== this) {
+                    this.parentNode.insertBefore(draggedElement, this);
+                    saveBookmarks();
+                }
+            });
+        });
+
+        function addEventListenersToDropElem(elem) {
+            elem.querySelector('.remove-bookmark-button').addEventListener('click', function () {
+                removeBookmark(elem.id);
+            });
+            elem.addEventListener('dragstart', drag);
+        }
+
+        function openSettingsPopup() {
+            document.getElementById('settingsPopup').style.display = 'block';
+        }
+
+        function closeSettingsPopup() {
+            document.getElementById('settingsPopup').style.display = 'none';
+        }
+
+        function applyBackgroundImage() {
+            const imageUrl = document.getElementById('backgroundImage').value;
+            if (imageUrl) {
+                document.body.style.background = `url(${imageUrl}) top right no-repeat`;
+                document.body.style.backgroundAttachment = "fixed";
+                document.body.style.backgroundSize = "100%";
+            }
+        }
+
+        function applyFontColor() {
+            const color = document.getElementById('fontColor').value;
+            if (color) {
+                document.documentElement.style.setProperty('--clock-color', color);
+            }
+        }
+
+        // Load bookmarks on page load
+        window.onload = function() {
+            loadBookmarks();
+            loadSettings();
+        };
     </script>
+    <!-- 사용자 설정 팝업 -->
+    <div id="settingsPopup" class="settings-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background-color:white; padding:20px; box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1); border-radius:10px;">
+        <h2>사용자 설정</h2>
+        <div>
+            <label for="backgroundImage">배경 이미지 URL:</label>
+            <input type="text" id="backgroundImage" placeholder="배경 이미지 URL 입력">
+            <button onclick="applyBackgroundImage()">적용</button>
+        </div>
+        <div style="margin-top:20px;">
+            <label for="fontColor">폰트 색상:</label>
+            <input type="color" id="fontColor">
+            <button onclick="applyFontColor()">적용</button>
+        </div>
+        <button style="margin-top:20px;" onclick="closeSettingsPopup()">닫기</button>
+    </div>
+
 </body>
 </html>
