@@ -126,6 +126,15 @@ searchBtn.addEventListener('click', (e)=> {
         }
 
         //초기화 후 요소 추가
+
+        /*
+        전체(rightMogo)
+        -버튼컨테이너
+        --문제보기
+        --다운로드
+        --정답보기
+        */
+
         console.log(nameCode)
         var rightMogo = document.createElement('div');
         rightMogo.className = "pdf-file";
@@ -134,7 +143,12 @@ searchBtn.addEventListener('click', (e)=> {
         mogo_button_con.className = "mogo-btn-container";
 
         var mogo_title = document.createElement('div');
-        mogo_title.textContent = yearN + "년 " + del_zero(monthN) + "월 고" + gradeN + " 모의고사 - " + sub_to_str(subjectN) + " 영역"; // 예) 2023년 9월 고1 모의고사 - 국어 영역
+        if (monthN == '11') {
+            mogo_title.textContent = yearN + "년 " + monthN + "월 고" + gradeN + " 모의고사 - " + sub_to_str(subjectN) + " 영역"; // 예) 2023년 11월 고1 모의고사 - 국어 영역
+        } else {
+            mogo_title.textContent = yearN + "년 " + del_zero(monthN) + "월 고" + gradeN + " 모의고사 - " + sub_to_str(subjectN) + " 영역"; // 예) 2023년 9월 고1 모의고사 - 국어 영역
+        }
+        
         rightMogo.appendChild(mogo_title);
         
         var mogo_open = document.createElement('div');
@@ -147,6 +161,11 @@ searchBtn.addEventListener('click', (e)=> {
         mogo_download.className = "mogo-download-btn"; // CSS 클래스 추가 (선택 사항)
         mogo_button_con.appendChild(mogo_download);
 
+        // var mogo_answer = document.createElement('div');
+        // mogo_answer.textContent = "정답보기";
+        // mogo_answer.className = "mogo-answer-btn"; // CSS 클래스 추가 (선택 사항)
+        // mogo_button_con.appendChild(mogo_answer);
+
         rightMogo.appendChild(mogo_button_con);
 
         pdfList.appendChild(rightMogo)
@@ -156,11 +175,19 @@ searchBtn.addEventListener('click', (e)=> {
 pdfList.addEventListener('click', (e)=> {
     
     if (e.target.matches('.mogo-open-btn')) {
+        nameCode = nameCode + 'P'
+        window.open('./pdfViewer.html','_blank');
+        localStorage.setItem("nameCode", nameCode);
+    }
+
+    if (e.target.matches('.mogo-answer-btn')) {
+        nameCode = nameCode + 'A'
         window.open('./pdfViewer.html','_blank');
         localStorage.setItem("nameCode", nameCode);
     }
 
     if (e.target.matches('.mogo-download-btn')) {
+        nameCode = nameCode + 'P'
         download_file(nameCode);
     }   
 })
