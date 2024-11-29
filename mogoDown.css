@@ -1,0 +1,136 @@
+/* *{
+    margin: 0px;
+    padding: 0px;
+} */
+
+.menu{
+    display: flex;
+}
+
+/* 메뉴 공동 */
+.menu div ul {
+    list-style: none;
+    display: flex;
+
+    margin: 5px;
+    padding: 10px;
+
+    height: 50px;
+    background-color: #ddd;
+    border: solid 2px #333;
+    border-radius: 5px;
+}
+
+/* 메뉴 하위 공통 */
+.menu div ul li {
+    margin: 5px;
+    
+    text-align: center;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer; /* 암기! */
+    user-select: none; /* 암기! */
+}
+
+li:active {
+    background-color: #888;
+}
+
+/* 메뉴 세분 */
+.gradebox {
+    width: 200px;
+
+}
+
+.search {
+    margin: 5px;
+    padding: 10px;
+    height: 50px;
+    background-color: #ddd;
+    border: solid 2px #333;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.search:hover {
+    background-color: #ccc;
+}
+.search:active {
+    background-color: #888;
+} 
+
+
+.mogo-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* 개별 파일 */
+.pdf-file {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 마지막 항목의 하단 경계선 제거 */
+.pdf-file:last-child {
+    border-bottom: none;
+}
+
+/* 파일 제목 */
+.mogo-title {
+    font-size: 16px;
+    color: #333;
+}
+
+/*이하 버튼 설정 - 전체버튼 */
+.mogo-btn-container {
+    margin-left: auto; /* 버튼 그룹을 오른쪽으로 정렬 */
+    display: flex;
+    gap: 5px; /* 버튼 사이 간격 */
+}
+
+
+/* 열기 버튼 */
+.mogo-open-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* 다운로드 버튼 */
+.mogo-download-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* 정답보기 버튼 */
+.mogo-answer-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #cad803;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+}
