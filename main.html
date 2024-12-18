@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@600&display=swap">
     <style>
         body {
-            background: url(background.jpg) top right no-repeat;
+            background: url(https://images.pexels.com/photos/1519088/pexels-photo-1519088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1) top right no-repeat;
             background-attachment: fixed;
             background-size: 100%;
             display: flex;
@@ -30,7 +30,7 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            color: var(--clock-color, #000); /* Default color */
+            color: var(--clock-color, #ffffff); /* Default color */
             user-select: none; /* Prevent text selection */
         }
 
@@ -205,6 +205,12 @@
         .side-menu-button:hover {
             background-color: #388e3c;
         }
+
+        img {
+            image-rendering: -webkit-optimize-contrast; /* Webkit (Chrome, Safari) */
+            image-rendering: crisp-edges; /* Firefox */
+            image-rendering: pixelated; /* 경우에 따라 */
+        }
     </style>
     
 </head>
@@ -326,7 +332,7 @@
                     newBookmark.draggable = true;
                     newBookmark.ondragstart = drag;
                     newBookmark.id = newId;
-                    newBookmark.innerHTML = `<a href='${bookmark.url}' target='_blank'><img src='https://www.google.com/s2/favicons?domain=${bookmark.url}' alt='${bookmark.name}'></a><button class='remove-bookmark-button' onclick='removeBookmark("${newId}")'>&times;</button>`;
+                    newBookmark.innerHTML = `<a href='${bookmark.url}' target='_blank'><img src='https://www.google.com/s2/favicons?domain=${bookmark.url}&size=32' alt='${bookmark.name}'></a><button class='remove-bookmark-button' onclick='removeBookmark("${newId}")'>&times;</button>`;
                     bookmarkMenu.insertBefore(newBookmark, bookmarkMenu.lastElementChild);
                 });
             }
@@ -355,6 +361,7 @@
 
         function openMenu() {
             document.getElementById("sideMenu").style.right = "0";
+        
         }
 
         function closeMenu() {
@@ -380,6 +387,7 @@
 
         function removeBookmark(id) {
             const bookmark = document.getElementById(id);
+            
             if (bookmark) {
                 bookmark.remove();
                 saveBookmarks();
